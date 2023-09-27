@@ -3,7 +3,7 @@
 ## **Resolución de entregables de las materias optativas**
 
 **Integrante:**
-- [Chevallier-Boutell, Ignacio José](https://github.com/Cheva94)
+- [Chevallier-Boutell, Ignacio José](https://www.linkedin.com/in/nachocheva/)
 
 ### **Estructura:**
 
