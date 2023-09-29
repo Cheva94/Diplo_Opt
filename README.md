@@ -2,9 +2,12 @@
 
 ## **Resolución de entregables de las materias optativas**
 
-**Integrante:**
-- [Chevallier-Boutell, Ignacio José](https://github.com/Cheva94)
+**Estudiante:**
+- [Chevallier-Boutell, Ignacio José.](https://www.linkedin.com/in/nachocheva/)
 
 ### **Estructura:**
 
-**1. PDI:** Procesamiento digital de imágenes.
+**1. PDI:** Procesamiento digital de imágenes. 
+- **Docentes:**
+    - Delrieux, Claudio (LCI, UNS-CONICET).
+    - Bajo, Juan Miguel (ICIC, UNS-CONICET).
