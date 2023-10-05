@@ -7,12 +7,12 @@
 
 ### **Estructura:**
 
-**1. PDI:** Procesamiento digital de imágenes.
+**1. PDI:** Procesamiento digital de imágenes (media materia).
 - **Docentes:**
     - Delrieux, Claudio (LCI, UNS-CONICET).
     - Bajo, Juan Miguel (ICIC, UNS-CONICET).
 
-**2. RL:** Aprendizaje por refuerzos.
+**2. RL:** Aprendizaje por refuerzos (materia completa).
 - **Docentes:**
     - Palombarini, Jorge (Mercado Libre).
     - Barsce, Juan Cruz (Mercado Libre).
