@@ -17,16 +17,23 @@ eps de base eran 500
 
 2) Barrer alfa, gamma y epsilon, fijando la semilla, el max_iter y la cantidad de episodios. 
 
-Alfa = 0 es esquivalente a no aprender porque en la función de actualización lo único que hace es sumar 0. Barrido de alfa: cuanto más chico es, más lento, pero mas seguro (se pierde ruido). Entre 0.1 y 0.05 no hay tanta diferencia de velocidad y el gapa los 10k eps es chico. Elegir entre estos dos. Probar con 0.05 primero. Ver que en tiempo no es tan diferete. No olvidar el nuevo: 0.01.
+Alfa = 0 es esquivalente a no aprender porque en la función de actualización lo único que hace es sumar 0. Barrido de alfa: cuanto más chico es, más lento, pero mas seguro (se pierde ruido). Entre 0.1 y 0.05 no hay tanta diferencia de velocidad y el gap a los 10k eps es chico. Elegir entre estos dos. Probar con 0.05 primero. Ver que en tiempo no es tan diferete. No olvidar el nuevo: 0.01.
 
 Barrido de gamma con eps = 10k y alpha = 0.05. Ver qué implica un gamma nulo. A menor gamma, necesita más iteraciones para alcanzar el Goal (necesitaría un mayor max_iter). Por eso la proporción de Earlies aumenta. Consume mucho más tiempo y no está cumpliendo encima. Ya con 0.25 tarda unos 14 minutos. Cortar en 0.1. Me quedo con gamma=0.65.
 
 --hasta acá hice en mi compu--
 -- todo lo que sigue lo hice con la compu del lab (cuidado con la comparación de wall time) --
+-- Armar todo el código necesario, pero volver a correr en mi compu  esta parte de epsilon--
 
-Epsilon sí puede valer 0 y 1 por explotar o explorar a full. Cuidado que en el sorteo de exploración se incluyen los máximos. Usar el rango que venímos viendo más estos dos extremos.
+Epsilon sí puede valer 0 y 1 por explotar o explorar a full. Cuidado que en el sorteo de exploración se incluyen los máximos. Usar el rango que venímos viendo más estos dos extremos. Agregue valores entre 0 y 0.1. Me quedo con epsilon = 0.005
 
 3) Con la combinación óptima, barrer episodios de nuevo?
+
+Hice este barrido fijando la semilla.
+
+--Hasta acá llegó lo de que hice en la compu del lab--
+
+Con 200000 episodios, repetí con semilla libre.
 
 # Q-learning greedy
 
