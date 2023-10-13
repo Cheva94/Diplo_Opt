@@ -30,7 +30,7 @@ Se decide:
 
 ![](Outputs/Lab1/Determinista/SARSA-epGreedy_its-2000_a-0.5_g-1_e-0.1.png)
 
-***Observación:*** a los fines de que sea reproducible, para el caso aleatorio se usó en cada caso el número de episodios correspondiente como semilla del generador de números aleatorios.
+***Observación:*** a los fines de que sea reproducible, para el caso aleatorio se usó en realidad el número de episodios correspondiente como semilla del generador de números aleatorios.
 
 > Barrido de $\alpha$
 
@@ -38,9 +38,9 @@ En la siguiente figura se ve la variación del retorno y la cantidad de pasos te
 
 Se observa que:
 * A menor $\alpha$, el aprendizjae es más lento, pero más seguro.
-* Desde 0.75 en adelante se introduce una gran cantidad de ruido: el agente comienza aprendiendo , preo a los pocos episodios *comienza a desaprender*.
+* Desde 0.75 en adelante se introduce una gran cantidad de ruido: el agente comienza aprendiendo, preo a los pocos episodios *comienza a desaprender* (la curva de aprendizaje cae).
 * Las curvas son prácticamente suaves para valores iguales o menores a 0.25.
-* Salvo $\alpha=0.9$ y $\alpha=1$ que presentan 0.01% y 1.45% de early stopping, los demás llegan al objetivo.
+* Salvo $\alpha=0.9$ y $\alpha=1$ que presentan 0.01% y 1.45% de early stopping, los demás llegan siempre al objetivo.
 * Las corridas son muy rápidas (15 s a 3 min s).
 
 Entre $\alpha$ igual a 0.1 y 0.05 no hay tanta diferencia de velocidad y el gap a los 10000 episodios es pequeño. Se decide fijar $\alpha=0.05$.
@@ -49,9 +49,61 @@ Entre $\alpha$ igual a 0.1 y 0.05 no hay tanta diferencia de velocidad y el gap 
 
 > Barrido de $\gamma$
 
+En la siguiente figura se ve la variación del retorno y la cantidad de pasos temporales en función del descuento (entre 0.1 y 1), para 10000 episodios y con una semilla fija, teniendo $\alpha=0.05$ y $\epsilon=0.1$. No se utiliza $\gamma=0$ porque esto sería equivalente a no poder ver más allá del retorno inmediato, perdiendo predecibilidad en el horizonte.
+
+Se observa que:
+* A menor $\gamma$, necesita más iteraciones para alcanzar el Goal (necesitaría un mayor max_iter). 
+* Desde 0.5 para abajo el agente comienza aprendiendo, preo luego la curva de aprendizaje cae. Algo similar se observa para $\gamma=0.6$ alrededor de los 8000 episodios.
+* Las curvas son suaves para valores iguales o mayores a 0.65.
+* Para $\gamma=0.6$ hay un 0.2% de early stopping, mientras que para $\gamma$ igual a 0.5, 0.25 y 0.1 el early stopping es de 4.4%, 54.22% y 79.43%, respectivamnete. Todos los demás llegan siempre al objetivo.
+* Desde $\gamma=1$ hasta $\gamma=0.5$ las corridas son muy rápidas (17 s a 2 min). En cambio, para los peores 2 casos las corridas demoran entre 14 y 19 minutos. 
+
+Se decide fijar $\gamma=0.65$.
+
+![](Outputs/Lab1/Gamma/SARSA-epGreedy_its-2000_eps-10000_a-0.05_e-0.1.png)
+
 > Barrido de $\epsilon$
 
+En la siguiente figura se ve la variación del retorno y la cantidad de pasos temporales en función de la frecuencia de exploración (entre 0 y 1), para 10000 episodios y con una semilla fija, teniendo $\alpha=0.05$ y $\gamma=0.65$. 
+
+Se observa que:
+* Para valores mayores o iguales a $\epsilon=0.25$ presenta picos en al curva de aprendizaje que después caen. A mayor $\epsilon$ estos picos tienen retornos promedios cada vez peores. Además necesitan muchos más pasos temporales.
+* Como era de esperarse, el caso extremo en el que sólo nos dedicamos a tirar la moneda constantemente ($\epsilon=1$, pura exploración) es el peor de todos, ya que nunca aprovechamos lo que ya sabemos.
+* El otro extremo donde sólo aprovechamos lo que sabemos ($\epsilon=0$, pura explotación) es el más rápido de todos, superando la barrera del camino seguro y tendiendo al óptimo. Sin embargo, estamos muy sesgados y nunca damos lugar a aprender algo diferente.
+* Las curvas son suaves para valores iguales o menores a 0.05.
+* Para $epsilon\in[0.25, 1]$ hay casos de early stopping (entre 8% y el 73%). Los demás siempre llegan al objetivo.
+* Para $epsilon\in[0, 0.1]$ la corrida tarda alrededor de 22 s, mientras que en los demás casos tarda entre 6 min y 35 min.
+
+Se decide fijar $\epsilon=0.001$.
+
+![](Outputs/Lab1/Epsilon/SARSA-epGreedy_its-2000_eps-10000_a-0.05_g-0.65.png)
+
 > Cantidad de episodios y semilla aleatoria (óptimos)
+
+En la siguiente figura se ve la variación del retorno y la cantidad de pasos temporales en función de la cantidad de episodios (entre 10000 y 200000), dejando que la semilla sea aleatoria (izquierda) o fijándola (derecha). Se utilizaron los hiperparámetros óptimos que se fueron encontrando: $\alpha=0.05$, $\gamma=0.65$ y $\epsilon=0.001$.
+
+Se observa que:
+* Ambos casos alcanzan un *plateau*, a unos 10 puntos de distancia respecto al valor de referencia Camino Seguro.
+* No hay ningún early stopping, llegando en todos los casos al objetivo.
+* Todas las corridas son sumamente rápidas (1 a 40 s).
+
+Se decide:
+* Fijar la semilla del generador de números aleatorios.
+* Fijar la cantidad de episodios en 10000.
+
+![](Outputs/Lab1/Optimos/SARSA-epGreedy_its-2000_a-0.05_g-0.65_e-0.001.png)
+
+***Observación:*** a los fines de que sea reproducible, se hizo lo mismo que antes y para el caso aleatorio se usó en realidad el número de episodios correspondiente como semilla del generador de números aleatorios.
+
+> Consluiones generales de SARSA + $\epsilon$-greedy
+
+* El algoritmo SARSA con una política $\epsilon$-greedy es determinista.
+* Cuanto más lento el aprendizaje, más seguro el avance. Para que no sea demasiado lento, tomar $\alpha\in[0.05, 0.25]$.
+* Si queremos sesgar el horizonte, tomar $\gamma\in[0.65, 1]$.
+* Al dejar fija la frecuencia de exploración, conviene tomar $\gamma\in[0.001, 0.05]$.
+
+---
+# Ejercicio: Q-learning + $\epsilon$-greedy
 
 
 ---
@@ -64,26 +116,6 @@ El hiperparámetro $\alpha$ me determina la velocidad de convergencia. Cuando $\
 Por otro lado, $\gamma$ nos limita el horizonte. Cuando  $\gamma=1$, dependemos exclusivamente del $\alpha$ para saber qué tan rápido o lento alcanzamos los 50 puntos. En cambio, si $0<\gamma<1$, no importa qué tan rápido o lento aprendamos, siempre habrá un techo para el valor al que convergemos, siendo menor a 50 puntos. Cuanto menor sea $\gamma$, más por debajo de 50 puntos nos vamos a encontrar.
 
 # Sarsa greedy
-
-
-2) Barrer alfa, gamma y epsilon, fijando la semilla, el max_iter y la cantidad de episodios. 
-
-Barrido de gamma con eps = 10k y alpha = 0.05. Ver qué implica un gamma nulo. A menor gamma, necesita más iteraciones para alcanzar el Goal (necesitaría un mayor max_iter). Por eso la proporción de Earlies aumenta. Consume mucho más tiempo y no está cumpliendo encima. Ya con 0.25 tarda unos 14 minutos. Cortar en 0.1. Me quedo con gamma=0.65.
-
---hasta acá hice en mi compu--
--- todo lo que sigue lo hice con la compu del lab (cuidado con la comparación de wall time) --
--- Armar todo el código necesario, pero volver a correr en mi compu  esta parte de epsilon--
-
-Epsilon sí puede valer 0 y 1 por explotar o explorar a full. Cuidado que en el sorteo de exploración se incluyen los máximos. Usar el rango que venímos viendo más estos dos extremos. Agregue valores entre 0 y 0.1. Me quedo con epsilon = 0.005
-
-3) Con la combinación óptima, barrer episodios de nuevo?
-
-Hice este barrido fijando la semilla.
-
---Hasta acá llegó lo de que hice en la compu del lab--
-
-Con 200000 episodios, repetí con semilla libre.
-
 
 > Mostrar la grilla q para los casos extremos: se inclina por el camino seguro más que por el óptimo. (esto lo saque antes del 1, pero aplicar en general).
 
