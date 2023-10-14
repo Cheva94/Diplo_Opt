@@ -80,23 +80,32 @@ Se decide fijar $\epsilon=0.005$.
 
 > Cantidad de episodios y semilla aleatoria (óptimos)
 
-En la siguiente figura se ve la variación del retorno y la cantidad de pasos temporales en función de la cantidad de episodios (entre 10000 y 200000), dejando que la semilla sea aleatoria (izquierda) o fijándola (derecha). Se utilizaron los hiperparámetros óptimos que se fueron encontrando: $\alpha=0.05$, $\gamma=0.65$ y $\epsilon=0.005$.
-
-Se observa que:
-* Ambos casos alcanzan un *plateau*, a unos 10 puntos de distancia respecto al valor de referencia Camino Seguro.
-* No hay ningún early stopping, llegando en todos los casos al objetivo.
-* Todas las corridas son sumamente rápidas (1 a 40 s).
-
 Se decide:
 * Fijar la semilla del generador de números aleatorios.
 * Fijar la cantidad de episodios en 10000.
 
-![](Outputs/Lab1/Optimos/SARSA-epGreedy_its-2000_a-0.05_g-0.65_e-0.001.png)
+
 
 ***Observación:*** a los fines de que sea reproducible, se hizo lo mismo que antes y para el caso aleatorio se usó en realidad el número de episodios correspondiente como semilla del generador de números aleatorios.
 
 > Consluiones generales de SARSA + $\epsilon$-greedy
 
+En la siguiente figura se ve la variación del retorno y la cantidad de pasos temporales en función de la cantidad de episodios (entre 10000 y 200000), dejando que la semilla sea aleatoria (izquierda) o fijándola (derecha). Se utilizaron los hiperparámetros óptimos que se fueron encontrando: $\alpha=0.05$, $\gamma=0.65$ y $\epsilon=0.005$.
+
+Se observa que:
+* Hasta ahora casi ningún caso había alcanzado llegar a la barrera del Camino Seguro, ya que se alcanzaba un *plateau* antes. Sin embargo, utilizando los valores óptimos vemos que con unos 20000 episodios nos aseguramos de cruzar este límite, tendiendo a una asíntota horizontal alrededor de $\mp15$ según sea el retorno o la cantidad de pasos.
+* Con 20000 episodios aún estamos en el codo de la curva, asentándose más alrededor de los 100000. Entre 20000 y 100000 hay un punto de diferencia, mientras que entre 100000 y 200000 hay 0.25 puntos.
+* No hay ningún early stopping, llegando en todos los casos al objetivo.
+* A mayor cantidad de episodios, más demora el cálculo. Sin embargo, sigue siendo muy rápido: en menos de 6 minutos corren los 200000 episodios.
+* A pesar de la aleatoriedad en las condiciones iniciales, el comportamiento es menos dispar que al comienzo, convergiendo la mayoría de las curvas a la misma situación. Esto puede deberse a que se están utilizando los hiperparámetros ya finetuneados.
+
+![](Outputs/Lab1/Optimos/SARSA-epGreedy_its-2000_a-0.05_g-0.65_e-0.005.png)
+
+Esta ruta intermedia a la que se llega entre el camino óptimo y el seguro queda reflejada en la siguiente figura para el caso de semilla fija y 100000 episodios.
+
+![](Outputs/Lab1/Optimos/SARSA-epGreedy_its-2000_eps-100000_a-0.05_g-0.65_e-0.005_fixedSeed.png)
+
+Se concluye entonces que:
 * El algoritmo SARSA con una política $\epsilon$-greedy es determinista.
 * Cuanto más lento el aprendizaje, más seguro el avance. Para que no sea demasiado lento, tomar $\alpha\in[0.05, 0.25]$.
 * Si queremos sesgar el horizonte, tomar $\gamma\in[0.65, 1]$.
