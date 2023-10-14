@@ -78,16 +78,6 @@ Se decide fijar $\epsilon=0.005$.
 
 ![](Outputs/Lab1/Epsilon/SARSA-epGreedy_its-2000_eps-10000_a-0.05_g-0.65.png)
 
-> Cantidad de episodios y semilla aleatoria (óptimos)
-
-Se decide:
-* Fijar la semilla del generador de números aleatorios.
-* Fijar la cantidad de episodios en 10000.
-
-
-
-***Observación:*** a los fines de que sea reproducible, se hizo lo mismo que antes y para el caso aleatorio se usó en realidad el número de episodios correspondiente como semilla del generador de números aleatorios.
-
 > Consluiones generales de SARSA + $\epsilon$-greedy
 
 En la siguiente figura se ve la variación del retorno y la cantidad de pasos temporales en función de la cantidad de episodios (entre 10000 y 200000), dejando que la semilla sea aleatoria (izquierda) o fijándola (derecha). Se utilizaron los hiperparámetros óptimos que se fueron encontrando: $\alpha=0.05$, $\gamma=0.65$ y $\epsilon=0.005$.
@@ -100,6 +90,8 @@ Se observa que:
 * A pesar de la aleatoriedad en las condiciones iniciales, el comportamiento es menos dispar que al comienzo, convergiendo la mayoría de las curvas a la misma situación. Esto puede deberse a que se están utilizando los hiperparámetros ya finetuneados.
 
 ![](Outputs/Lab1/Optimos/SARSA-epGreedy_its-2000_a-0.05_g-0.65_e-0.005.png)
+
+***Observación:*** a los fines de que sea reproducible, se hizo lo mismo que antes y para el caso aleatorio se usó en realidad el número de episodios correspondiente como semilla del generador de números aleatorios.
 
 Esta ruta intermedia a la que se llega entre el camino óptimo y el seguro queda reflejada en la siguiente figura para el caso de semilla fija y 100000 episodios.
 
@@ -114,6 +106,30 @@ Se concluye entonces que:
 ---
 # Ejercicio: Q-learning + $\epsilon$-greedy
 
+> Cantidad de episodios y semilla aleatoria (óptimos de SARSA)
+
+En la siguiente figura se ve la variación del retorno y la cantidad de pasos temporales en función de la cantidad de episodios (entre 10000 y 100000), dejando que la semilla sea aleatoria (izquierda) o fijándola (derecha). Se utilizaron los hiperparámetros que resultaron óptimos para SARSA: $\alpha=0.05$, $\gamma=0.65$ y $\epsilon=0.005$.
+
+
+
+
+
+
+
+
+Se observa que:
+* El algoritmo utilizado es determinista.
+* Ambos casos alcanzan un *plateau*, a unos 10 puntos de distancia respecto al valor de referencia Camino Seguro.
+* No hay ningún early stopping, llegando en todos los casos al objetivo.
+* Todas las corridas son sumamente rápidas (1 a 40 s).
+
+Se decide:
+* Fijar la semilla del generador de números aleatorios.
+* Fijar la cantidad de episodios en 10000.
+
+![](Outputs/Lab1/Determinista/SARSA-epGreedy_its-2000_a-0.5_g-1_e-0.1.png)
+
+***Observación:*** a los fines de que sea reproducible, para el caso aleatorio se usó en realidad el número de episodios correspondiente como semilla del generador de números aleatorios.
 
 ---
 # Acá hay notas
