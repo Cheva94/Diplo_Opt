@@ -170,6 +170,11 @@ Existe una leve diferencia temporal entre un caso y el otro: SARSA demora 116 s,
 Todas las diferencias observadas se deben a cómo se conceptualiza la política en cada caso: SARSA es on-policy ya que siempre se enmarca en la política dada ($\epsilon$-greedy en nuestro caso) para la toma de decisión de qué acciones ejecutar, mientras que Q-learning es off-policy, debido a que la acción que se decide ejecutar no necesariamente responde a la política impuesta, quedando por fuera de esta.
 
 ---
+# Ejercicio: SoftMax
+
+
+
+---
 # Consluiones generales
 
 Se concluye entonces que:
