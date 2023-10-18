@@ -12,15 +12,19 @@
 - Barsce, Juan Cruz (Mercado Libre).
 
 ---
-# Ejercicio: SARSA + $\epsilon$-greedy
+# SARSA + $\epsilon$-greedy
+
+Todos los plots que se utilizan en la presente entrega representan la variación del retorno y la cantidad de pasos temporales en función de cierto parámetro variable, dejando todos los demás fijos.
 
 ### Cantidad de episodios y semilla aleatoria (default)
 
-En la siguiente figura se ve la variación del retorno y la cantidad de pasos temporales en función de la cantidad de episodios (entre 500 y 20000), dejando que la semilla sea aleatoria (izquierda) o fijándola (derecha). Se utilizaron los hiperparámetros *por defecto* (los que están en las consignas): $\alpha=0.5$, $\gamma=1$ y $\epsilon=0.1$.
+Parámetros:
+* **Variable:** cantidad de episodios ($Eps\in[500, 20000]$), dejando que la semilla sea aleatoria (izquierda) o fijándola (derecha).
+* **Fijos:** $\alpha=0.5$, $\gamma=1$ y $\epsilon=0.1$. Se utilizaron los hiperparámetros *por defecto* (los que están en las consignas).
 
 Se observa que:
 * El algoritmo utilizado es determinista.
-* Ambos casos alcanzan un *plateau*, a unos 10 puntos de distancia respecto al valor de referencia Camino Seguro.
+* Ambos casos alcanzan un *plateau*, a unos 10 puntos de distancia respecto al valor del Camino Seguro.
 * No hay ningún early stopping, llegando en todos los casos al objetivo.
 * Todas las corridas son sumamente rápidas (1 a 40 s).
 
@@ -34,7 +38,9 @@ Se decide:
 
 ### Barrido de $\alpha$
 
-En la siguiente figura se ve la variación del retorno y la cantidad de pasos temporales en función de la tasa de aprendizaje (entre 0.005 y 1), para 10000 episodios y con una semilla fija, teniendo $\gamma=1$ y $\epsilon=0.1$. No se utiliza $\alpha=0$ porque esto sería equivalente a no aprender, ya que en la función de actualización lo único que se haría es sumar 0 al valor de Q.
+Parámetros:
+* **Variable:** tasa de aprendizaje ($\alpha\in[0.005, 1]$). No se utiliza $\alpha=0$ porque esto sería equivalente a no aprender, ya que en la función de actualización lo único que se haría es sumar 0 al valor de Q.
+* **Fijos:** $Eps=10^4$, $\gamma=1$ y $\epsilon=0.1$.
 
 Se observa que:
 * A menor $\alpha$, el aprendizjae es más lento, pero más seguro.
@@ -49,7 +55,9 @@ Entre $\alpha$ igual a 0.1 y 0.05 no hay tanta diferencia de velocidad y el gap 
 
 ### Barrido de $\gamma$
 
-En la siguiente figura se ve la variación del retorno y la cantidad de pasos temporales en función del descuento (entre 0.1 y 1), para 10000 episodios y con una semilla fija, teniendo $\alpha=0.05$ y $\epsilon=0.1$. No se utiliza $\gamma=0$ porque esto sería equivalente a no poder ver más allá del retorno inmediato, perdiendo predecibilidad en el horizonte.
+Parámetros:
+* **Variable:** descuento ($\gamma\in[0.1, 1]$). No se utiliza $\gamma=0$ porque esto sería equivalente a no poder ver más allá del retorno inmediato, perdiendo predecibilidad en el horizonte.
+* **Fijos:** $Eps=10^4$, $\alpha=0.05$ y $\epsilon=0.1$.
 
 Se observa que:
 * A menor $\gamma$, necesita más iteraciones para alcanzar el Goal (necesitaría un mayor max_iter). 
@@ -64,7 +72,9 @@ Se decide fijar $\gamma=0.65$.
 
 ### Barrido de $\epsilon$
 
-En la siguiente figura se ve la variación del retorno y la cantidad de pasos temporales en función de la frecuencia de exploración (entre 0 y 1), para 10000 episodios y con una semilla fija, teniendo $\alpha=0.05$ y $\gamma=0.65$. 
+Parámetros:
+* **Variable:** frecuencia de exploración ($\epsilon\in[0,1]$)
+* **Fijos:** $Eps=10^4$, $\alpha=0.05$ y $\gamma=0.65$.
 
 Se observa que:
 * Para valores mayores o iguales a $\epsilon=0.25$ presenta picos en al curva de aprendizaje que después caen. A mayor $\epsilon$ estos picos tienen retornos promedios cada vez peores. Además necesitan muchos más pasos temporales.
@@ -80,7 +90,9 @@ Se decide fijar $\epsilon=0.005$.
 
 ### Cantidad de episodios y semilla aleatoria (óptimos)
 
-En la siguiente figura se ve la variación del retorno y la cantidad de pasos temporales en función de la cantidad de episodios (entre 10000 y 200000), dejando que la semilla sea aleatoria (izquierda) o fijándola (derecha). Se utilizaron los hiperparámetros óptimos que se fueron encontrando: $\alpha=0.05$, $\gamma=0.65$ y $\epsilon=0.005$.
+Parámetros:
+* **Variable:** cantidad de episodios ($Eps\in[10000, 200000]$), dejando que la semilla sea aleatoria (izquierda) o fijándola (derecha).
+* **Fijos:** $\alpha=0.05$, $\gamma=0.65$ y $\epsilon=0.005$. Se utilizaron los hiperparámetros óptimos que se fueron encontrando.
 
 Se observa que:
 * Hasta ahora casi ningún caso había alcanzado llegar a la barrera del Camino Seguro, ya que se alcanzaba un *plateau* antes. Sin embargo, utilizando los valores óptimos vemos que con unos 20000 episodios nos aseguramos de cruzar este límite, tendiendo a una asíntota horizontal alrededor de $\mp15$ según sea el retorno o la cantidad de pasos.
@@ -92,11 +104,13 @@ Se observa que:
 ![](Outputs/Lab1/Optimos/SARSA-epGreedy_its-2000_a-0.05_g-0.65_e-0.005.png)
 
 ---
-# Ejercicio: Q-learning + $\epsilon$-greedy
+# Q-learning + $\epsilon$-greedy
 
 ### Cantidad de episodios y semilla aleatoria (óptimos de SARSA)
 
-En la siguiente figura se ve la variación del retorno y la cantidad de pasos temporales en función de la cantidad de episodios (entre 10000 y 100000), dejando que la semilla sea aleatoria (izquierda) o fijándola (derecha). Se utilizaron los hiperparámetros que resultaron óptimos para SARSA: $\alpha=0.05$, $\gamma=0.65$ y $\epsilon=0.005$.
+Parámetros:
+* **Variable:** cantidad de episodios ($Eps\in[10000, 100000]$), dejando que la semilla sea aleatoria (izquierda) o fijándola (derecha).
+* **Fijos:** $\alpha=0.05$, $\gamma=0.65$ y $\epsilon=0.005$. Se utilizaron los hiperparámetros óptimos que se encontraron para SARSA.
 
 Se observa que:
 * También es determinista.
@@ -112,7 +126,9 @@ Se decide:
 
 ### Barrido de $\alpha$
 
-En la siguiente figura se ve la variación del retorno y la cantidad de pasos temporales en función de la tasa de aprendizaje (entre 0.05 y 0.25), para 100000 episodios y con una semilla fija, teniendo $\gamma=0.65$ y $\epsilon=0.005$.
+Parámetros:
+* **Variable:** tasa de aprendizaje ($\alpha\in[0.05, 0.25]$).
+* **Fijos:** $Eps=10^5$, $\gamma=0.65$ y $\epsilon=0.005$.
 
 Se observa que:
 * Nuevamente queda en evidencia que a menor $\alpha$, el aprendizjae es más lento. Sin embargo, todos convergen al mismo punto.
@@ -125,7 +141,9 @@ Se decide seguir usando $\alpha=0.05$.
 
 ### Barrido de $\gamma$
 
-En la siguiente figura se ve la variación del retorno y la cantidad de pasos temporales en función del descuento (entre 0.65 y 1), para 100000 episodios y con una semilla fija, teniendo $\alpha=0.05$ y $\epsilon=0.0051$.
+Parámetros:
+* **Variable:** descuento ($\gamma\in[0.65, 1]$).
+* **Fijos:** $Eps=10^5$, $\alpha=0.05$ y $\epsilon=0.005$.
 
 Se observa que:
 * Al aumentar el descuento (menor $\gamma$), la convergencia es (levemente) más lenta.
@@ -137,7 +155,9 @@ Se decide seguir usando $\gamma=0.65$.
 
 ### Barrido de $\epsilon$
 
-En la siguiente figura se ve la variación del retorno y la cantidad de pasos temporales en función de la frecuencia de exploración (entre 0.005 y 0.05), para 100000 episodios y con una semilla fija, teniendo $\alpha=0.05$ y $\gamma=0.65$. 
+Parámetros:
+* **Variable:** frecuencia de exploración ($\epsilon\in[0.005, 0.05]$)
+* **Fijos:** $Eps=10^5$, $\alpha=0.05$ y $\gamma=0.65$.
 
 Se observa que:
 * Para $\epsilon=0.05$ no aprende, pero en los otros dos casos sí.
@@ -148,18 +168,18 @@ Se decide seguir usando $\epsilon=0.005$.
 ![](Outputs/Lab1/Epsilon/Qlearning-epGreedy_its-2000_eps-100000_a-0.05_g-0.65.png)
 
 ---
-# Ejercicio: greedy Q-learning vs greedy SARSA
+# greedy Q-learning vs greedy SARSA
 
 En ambos casos se obtuvieron los mismos valores óptimos para los hiperparámetros. En la siguiente figura se ve la variación del retorno y la cantidad de pasos temporales en función del algoritmo utilizado, para el caso de semilla fija y 100000 episodios. Q-learning tiene un mejor rendimiento que SARSA, acercándose mucho más a la situación Óptima.
 
-![](Outputs/Lab1/SARSAvsQlearning.png)
+![](Outputs/Lab1/SARSAvsQlearning_epGreedy.png)
 
 Esta mayor cercanía al camino óptimo se puede apreciar comparando los siguientes mapas resultantes, donde vemos que SARSA toma la ruta intermedia entre la segura y la óptima, mientras que Q-learning va por el camino óptimo.
-* SARSA:
+* greedy SARSA:
 
 ![](Outputs/Lab1/SARSA-epGreedy_its-2000_eps-100000_a-0.05_g-0.65_e-0.005_fixedSeed.png)
 
-* Q-learning:
+* greedy Q-learning:
 
 ![](Outputs/Lab1/Qlearning-epGreedy_its-2000_eps-100000_a-0.05_g-0.65_e-0.005.png)
 
@@ -170,30 +190,65 @@ Existe una leve diferencia temporal entre un caso y el otro: SARSA demora 116 s,
 Todas las diferencias observadas se deben a cómo se conceptualiza la política en cada caso: SARSA es on-policy ya que siempre se enmarca en la política dada ($\epsilon$-greedy en nuestro caso) para la toma de decisión de qué acciones ejecutar, mientras que Q-learning es off-policy, debido a que la acción que se decide ejecutar no necesariamente responde a la política impuesta, quedando por fuera de esta.
 
 ---
-# Ejercicio: SoftMax
+# SoftMax
 
 ### Barrido de $\tau$
 
-En la siguiente figura se ve la variación del retorno y la cantidad de pasos temporales en función de la temperatura computacional (entre 0.005 y 0.05), para 100000 episodios y con una semilla fija, teniendo $\alpha=0.05$ y $\gamma=0.65$. 
+Parámetros:
+* **Variable:** temperatura computacional ($\tau\in[0.005, 1]$)
+* **Fijos:** $Eps=10^5$, $\alpha=0.05$ y $\gamma=0.65$.
 
 Se observa que:
-* Para $\epsilon=0.05$ no aprende, pero en los otros dos casos sí.
-* En todos los casos se llega al objetivo, pero mientras que $\epsilon=0.05$ ocupa 27 minutos, los otros dos casos demoran 130-150 s.
+* A mayor temperatura, peor es el aprendizaje. Para Q-learning se tiene hasta $\tau=0.05$ porque la convergencencia para valores mayores demora muchas horas. Lo mismo ocurre con valores mayores a 1 para SARSA.
+* Los únicos casos favorables son con $\tau=0.005$, demorando unos 5 min.
 
-Se decide seguir usando $\epsilon=0.005$.
+Se decide fijar $\tau=0.005$.
 
-![](Outputs/Lab1/Epsilon/Qlearning-epGreedy_its-2000_eps-100000_a-0.05_g-0.65.png)
+![](Outputs/Lab1/Tau/SoftMax_its-2000_eps-100000_a-0.05_g-0.65_fixedSeed.png)
+
+### Barrido de $\alpha$
+
+Parámetros:
+* **Variable:** tasa de aprendizaje ($\alpha\in[0.05, 0.25]$).
+* **Fijos:** $Eps=10^5$, $\gamma=0.65$ y $\tau=0.005$.
+
+Se observa que:
+* Otra vez queda en evidencia que a menor $\alpha$, el aprendizjae es más lento. Sin embargo, todos convergen al mismo punto.
+* Para Q-learning se tiene sólo $\alpha=0.05$ porque la convergencencia para valores mayores demora más de 1 hora, mientras que la más lenta de SARSA toma 5 minutos.
+
+Se decide seguir usando $\alpha=0.05$.
+
+![](Outputs/Lab1/Alpha/SoftMax_its-2000_eps-100000_g-0.65_t-0.005_fixedSeed.png)
+
+### Barrido de $\gamma$
+
+Parámetros:
+* **Variable:** descuento ($\gamma\in[0.6, 0.7]$).
+* **Fijos:** $Eps=10^5$, $\alpha=0.05$ y $\tau=0.005$.
+
+Se observa que:
+* Todas llegan siempre al objetivo, demorando entre 100 y 140 s.
+* Valores mayores a 0.7 causaban un error (ValueError: probabilities contain NaN).
+* Valores menores a 0.6 demoraban mucho tiempo.
+
+Se decide seguir usando $\gamma=0.65$.
+
+![](Outputs/Lab1/Gamma/SoftMax_its-2000_eps-100000_a-0.05_t-0.005_fixedSeed.png)
 
 ---
-# Consluiones generales
+# Q-learning vs SARSA: $\epsilon$-greedy vs SoftMax
 
-Se concluye entonces que:
-* El algoritmo SARSA con una política $\epsilon$-greedy es determinista. Igual el Q-learning.
+Se comparan los 4 mejores resultados al combinar el mecanismo de actualización de Q con la política, utilizando: $Eps=10^5$, $\alpha=0.05$, $\gamma=0.65$ y $\tau / \epsilon=0.005$ (según corresponda). Vemos que SARSA tiene un rendimiento intermedio, quedando en ambos extremos Q-learning. Si se desea usar $\epsilon$-greedy, conviene usarlo con Q-learning, mientras que si se desea usar SoftMax es conveniente usarlo con SARSA. El mejor aprendizaje obtenido fue combinando Q-learning con $\epsilon$-greedy.
+
+![](Outputs/Lab1/Best4.png)
+
+---
+# Consluiones
+
+Se concluye entonces que: (esto vale para greedy)
+* Los algoritmos y políticas estudiados son deterministas.
 * Cuanto más lento el aprendizaje, más seguro el avance. Para que no sea demasiado lento, tomar $\alpha\in[0.05, 0.25]$.
 * Si queremos sesgar el horizonte, tomar $\gamma\in[0.65, 1]$.
-* Al dejar fija la frecuencia de exploración, conviene tomar $\epsilon\in[0.005, 0.05]$.
-
----
-# Hasta acá ya tendría las 3 primeras actividades hechas. Las dos que siguen son opcionales: la de SoftMax y la de Dyna-Q
-
-Nunca hubo un drop. Consultar.
+* Para el caso de $\epsilon$-greedy, al dejar fija la frecuencia de exploración, conviene tomar $\epsilon\in[0.005, 0.05]$. En el caso de SoftMax, conviene utilizar una temperatura computacional baja ($\tau \sim 0.005$).
+* Nunca hubo ningún drop, *i.e.* el entorno nunca devolvió `truncated=True` luego de realizar un paso.
+* Para tener una mejor exploración con un algoritmo al estilo de SoftMax sería conveniente buscar otra función de activación para no caer en errores tan fácilmente.
