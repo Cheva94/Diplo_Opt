@@ -1,6 +1,6 @@
 Goal	Drop	Early	Total
 100000	0	0	100000
-Wall Time[s]	314.8594148159027
+Wall Time[s]	302.3145697116852
 State	Action	Q-value
 0	0	-2.854440
 0	1	-2.851675

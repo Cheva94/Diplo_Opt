@@ -172,7 +172,17 @@ Todas las diferencias observadas se deben a cómo se conceptualiza la política 
 ---
 # Ejercicio: SoftMax
 
+### Barrido de $\tau$
 
+En la siguiente figura se ve la variación del retorno y la cantidad de pasos temporales en función de la temperatura computacional (entre 0.005 y 0.05), para 100000 episodios y con una semilla fija, teniendo $\alpha=0.05$ y $\gamma=0.65$. 
+
+Se observa que:
+* Para $\epsilon=0.05$ no aprende, pero en los otros dos casos sí.
+* En todos los casos se llega al objetivo, pero mientras que $\epsilon=0.05$ ocupa 27 minutos, los otros dos casos demoran 130-150 s.
+
+Se decide seguir usando $\epsilon=0.005$.
+
+![](Outputs/Lab1/Epsilon/Qlearning-epGreedy_its-2000_eps-100000_a-0.05_g-0.65.png)
 
 ---
 # Consluiones generales
