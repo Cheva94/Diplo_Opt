@@ -243,6 +243,28 @@ Se comparan los 4 mejores resultados al combinar el mecanismo de actualización 
 ![](Outputs/Lab1/Best4.png)
 
 ---
+# Dyna-Q
+
+Sólo se estudiará lo que ocurre al alterar la cantidad de pasos de planificación. Se asume que los demás parámetros e hiperparámetros son óptimos.
+
+### Barrido de pasos de planificación
+
+Parámetros:
+* **Variable:** pasos de planificación ($steps\in[0, 100]$).
+* **Fijos:** $Eps=10^5$, $\alpha=0.05$, $\gamma=0.65$ y $\epsilon=0.005$.
+
+Se observa que:
+
+
+* Todas llegan siempre al objetivo, demorando entre 100 y 140 s.
+* Valores mayores a 0.7 causaban un error (ValueError: probabilities contain NaN).
+* Valores menores a 0.6 demoraban mucho tiempo.
+
+Se decide seguir usando $\gamma=0.65$.
+
+!!!!!![](Outputs/Lab1/Gamma/SoftMax_its-2000_eps-100000_a-0.05_t-0.005_fixedSeed.png)
+
+---
 # Consluiones
 
 Se concluye entonces que: (esto vale para greedy)
