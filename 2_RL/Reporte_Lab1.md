@@ -250,27 +250,34 @@ Sólo se estudiará lo que ocurre al alterar la cantidad de pasos de planificaci
 ### Barrido de pasos de planificación
 
 Parámetros:
-* **Variable:** pasos de planificación ($steps\in[0, 100]$).
-* **Fijos:** $Eps=10^5$, $\alpha=0.05$, $\gamma=0.65$ y $\epsilon=0.005$.
+* **Variable:** pasos de planificación ($steps\in[0, 100]$). También se varía la cantidad de episodios por la duración de las corridas y por cómo evolucionan las curvas de aprendizaje.
+* **Fijos:** $\alpha=0.05$, $\gamma=0.65$ y $\epsilon=0.005$.
 
 Se observa que:
+* Teniendo 50, 60, 90 o 100 pasos mejora respecto a Q-learning (0 pasos).
+* Para 50, 60, 90 o 100 pasos converge al mismo punto. La diferencia está en la duración: a mayor cantidad de pasos, más demora (de 12 a 22 min).
+* No se presenta una relación tan *lineal* como con otros hiperparámetros.
 
+Se decide fijar en 50 pasos.
 
-* Todas llegan siempre al objetivo, demorando entre 100 y 140 s.
-* Valores mayores a 0.7 causaban un error (ValueError: probabilities contain NaN).
-* Valores menores a 0.6 demoraban mucho tiempo.
+![](Outputs/Lab1/DynaQ/DynaQ-epGreedy_its-800_eps-10000_a-0.05_g-0.65_e-0.005.png)
 
-Se decide seguir usando $\gamma=0.65$.
+En la siguiente figura se puede ver cómo realmente hacer 0 pasos de planificación coincide con Q-learning. Además, vemos que todas las curvas convergen al mismo punto, pero Dyna-Q con 50 pasos lo hace mucho antes: a los 20 mil episodios alcanza el mismo valor que Q-learning a los 100 mil.
 
-!!!!!![](Outputs/Lab1/Gamma/SoftMax_its-2000_eps-100000_a-0.05_t-0.005_fixedSeed.png)
+![](Outputs/Lab1/DynaQ/DynaQ-epGreedy_its-2000_eps-100000_a-0.05_g-0.65_e-0.005.png)
 
 ---
-# Consluiones
+# Comparación final y consluiones
 
-Se concluye entonces que: (esto vale para greedy)
+En la siguiente figura se comparan los 3 mejores resultados obtenidos para los 3 algoritmos estudiados. El que mejor resultados arroja es Dyna-Q ya que con sólo 20000 episodios se obtiene el mismo resultado al que llega Q-learning a los 100000. SARSA ni siquiera alcanza ese valor.
+
+![](Outputs/Lab1/Final.png)
+
+Se concluye entonces que:
 * Los algoritmos y políticas estudiados son deterministas.
 * Cuanto más lento el aprendizaje, más seguro el avance. Para que no sea demasiado lento, tomar $\alpha\in[0.05, 0.25]$.
 * Si queremos sesgar el horizonte, tomar $\gamma\in[0.65, 1]$.
 * Para el caso de $\epsilon$-greedy, al dejar fija la frecuencia de exploración, conviene tomar $\epsilon\in[0.005, 0.05]$. En el caso de SoftMax, conviene utilizar una temperatura computacional baja ($\tau \sim 0.005$).
 * Nunca hubo ningún drop, *i.e.* el entorno nunca devolvió `truncated=True` luego de realizar un paso.
 * Para tener una mejor exploración con un algoritmo al estilo de SoftMax sería conveniente buscar otra función de activación para no caer en errores tan fácilmente.
+* El aumento en el número de episodios de Dyna-Q no asegura una mejor convergencia.
