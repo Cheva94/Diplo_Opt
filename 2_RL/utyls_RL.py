@@ -1,11 +1,9 @@
 #!/usr/bin/python3.10
 
-import itertools
 from typing import Callable, Tuple
 
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
 import gymnasium as gym
 
@@ -469,6 +467,48 @@ def mean_evol(Arr: np.ndarray) -> np.ndarray:
     val_per_eps = [cum_vals[i] / eps_val[i] for i in range(len(cum_vals))]
 
     return np.array(val_per_eps)
+
+
+def draw_map(File: str):
+    '''
+    Grafica el mapa con el mejor camino encontrado por el agente.
+    Args:
+        q: diccionario de valores de estado-acción
+    '''
+
+    data = pd.read_csv(File, header=None, sep='\t').iloc[4:152, 2].to_numpy().astype(float)
+    walk = []
+
+    for s in range(37):
+        # Lista de valores q asociados a un estado-acción
+        s_data = data[4*s:4*(1+s)]
+        
+        # Toma el valor máximo
+        max_q = np.max(s_data)
+
+        # Puede haber más de un valor máximo
+        count = np.count_nonzero(s_data == max_q)
+
+        if count > 1:
+            # Hay más de un valor máximo
+            walk.append(str(count))
+
+        else:
+            # Hay un único valor máximo
+            arg = np.argwhere(s_data == max_q)[0][0]
+            if arg == 0:
+                walk.append('U')
+            elif arg == 1:
+                walk.append('R')
+            elif arg == 2:
+                walk.append('D')
+            else:
+                walk.append('L')
+
+    walk = np.array(walk)
+    walk[2] = '~'
+    for k in range(6):
+        print(walk[6*k:6*(1+k)])
 
 ################################################################################
 ################################################################################
