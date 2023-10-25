@@ -431,7 +431,7 @@ def run_DynaQ(
             WallTime = time.time() - start
             print(f'\t# Episodios = {eps} >>> Retorno = {episode_return} | Tiempo = {WallTime/60:.2f} min')
 
-            with open(f'Outputs/Lab2/tmp_s-{plan}.csv', 'w') as f:
+            with open(f'Outputs/Lab2/Dyna-Q/tmp_s-{plan}.csv', 'w') as f:
                 f.write('Goal\tDrop\tEarly\tCorridos\n')
                 f.write(f'{goal}\t{drop}\t{early}\t{eps}\n')
 
