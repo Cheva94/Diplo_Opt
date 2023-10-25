@@ -148,7 +148,8 @@ def Q_learning(
     next_state: int,
     actions: range,
     hyperparameters: dict,
-    q: dict
+    q: dict,
+    random_state: np.random.RandomState
 ) -> Tuple[int, int]:
 
     """
@@ -162,6 +163,7 @@ def Q_learning(
         actions: lista de acciones posibles
         hyperparameters: hiperparámetros del algoritmo de aprendizaje
         q: diccionario de valores de estado-acción
+        random_state: generador de números aleatorios
     """
 
     # Lista de valores q asociados a un estado-acción
@@ -382,7 +384,7 @@ def run_DynaQ(
 
             # Mecanismo de aprendizaje con Q-learning
             state = Q_learning(
-                state, action, reward, next_state, actions, hyperparameters, q)
+                state, action, reward, next_state, actions, hyperparameters, q, random_state)
 
             # Planificación
             for _plan in range(plan):
@@ -395,7 +397,7 @@ def run_DynaQ(
 
                 # Actualizamos Q
                 _qs = Q_learning(
-                    plan_S, plan_A, plan_R, plan_nextS, actions, hyperparameters, q)
+                    plan_S, plan_A, plan_R, plan_nextS, actions, hyperparameters, q, random_state)
 
             # Análisis de convergencia
             if terminated:
@@ -425,7 +427,7 @@ def run_DynaQ(
             t += 1
 
         # Chequeo el progreso
-        if (eps+1) % 100 == 0:
+        if (eps+1) % 1000 == 0:
             WallTime = time.time() - start
             print(f'\t# Episodios = {eps} >>> Retorno = {episode_return} | Tiempo = {WallTime/60:.2f} min')
 
