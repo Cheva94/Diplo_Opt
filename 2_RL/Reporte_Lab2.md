@@ -26,7 +26,7 @@ Parámetros:
 
 Decisión: fijar $\alpha=0.1$.
 
-![](Outputs/Lab2/SARSA-SoftMax/Alpha/its-1000_eps-20000_g-1_t-0.05.png)
+![](Outputs/Lab2_Ej1/SARSA-SoftMax/Alpha/its-1000_eps-20000_g-1_t-0.05.png)
 
 ### Barrido de $\gamma$
 
@@ -36,7 +36,7 @@ Parámetros:
 
 Decisión: fijar $\gamma=0.45$.
 
-![](Outputs/Lab2/SARSA-SoftMax/Gamma/its-1000_eps-20000_a-0.1_t-0.05.png)
+![](Outputs/Lab2_Ej1/SARSA-SoftMax/Gamma/its-1000_eps-20000_a-0.1_t-0.05.png)
 
 ### Barrido de $\tau$
 
@@ -46,7 +46,7 @@ Parámetros:
 
 Decisión: fijar $\tau=0.03$.
 
-![](Outputs/Lab2/SARSA-SoftMax/Tau/its-1000_eps-20000_a-0.1_g-0.45.png)
+![](Outputs/Lab2_Ej1/SARSA-SoftMax/Tau/its-1000_eps-20000_a-0.1_g-0.45.png)
 
 ### Cantidad de episodios
 
@@ -56,7 +56,7 @@ Parámetros:
 
 Decisión: fijar $Eps=10^5$.
 
-![](Outputs/Lab2/SARSA-SoftMax/Episodios/its-1000_a-0.1_g-0.45_t-0.03.png)
+![](Outputs/Lab2_Ej1/SARSA-SoftMax/Episodios/its-1000_a-0.1_g-0.45_t-0.03.png)
 
 ## Q-learning con $\epsilon$-Greedy
 
@@ -68,7 +68,7 @@ Parámetros:
 
 Decisión: fijar $\alpha=0.1$.
 
-![](Outputs/Lab2/Q-learning-EpGreedy/Alpha/its-1000_eps-20000_g-1_e-0.05.png)
+![](Outputs/Lab2_Ej1/Q-learning-EpGreedy/Alpha/its-1000_eps-20000_g-1_e-0.05.png)
 
 ### Barrido de $\gamma$
 
@@ -78,7 +78,7 @@ Parámetros:
 
 Decisión: fijar $\gamma=0.65$.
 
-![](Outputs/Lab2/Q-learning-EpGreedy/Gamma/its-1000_eps-20000_a-0.1_e-0.05.png)
+![](Outputs/Lab2_Ej1/Q-learning-EpGreedy/Gamma/its-1000_eps-20000_a-0.1_e-0.05.png)
 
 ### Barrido de $\epsilon$
 
@@ -88,7 +88,7 @@ Parámetros:
 
 Decisión: fijar $\epsilon=0.001$.
 
-![](Outputs/Lab2/Q-learning-EpGreedy/Epsilon/its-1000_eps-20000_a-0.1_g-0.65.png)
+![](Outputs/Lab2_Ej1/Q-learning-EpGreedy/Epsilon/its-1000_eps-20000_a-0.1_g-0.65.png)
 
 ### Cantidad de episodios
 
@@ -98,7 +98,7 @@ Parámetros:
 
 Decisión: fijar $Eps=10^5$.
 
-![](Outputs/Lab2/Q-learning-EpGreedy/Episodios/its-1000_a-0.1_g-0.65_e-0.001.png)
+![](Outputs/Lab2_Ej1/Q-learning-EpGreedy/Episodios/its-1000_a-0.1_g-0.65_e-0.001.png)
 
 ## Dyna-Q
 
@@ -110,7 +110,7 @@ Parámetros:
 
 Decisión: fijar $steps=10$.
 
-![](Outputs/Lab2/Dyna-Q/Steps/its-1000_eps-20000_a-0.1_g-1_e-0.05.png)
+![](Outputs/Lab2_Ej1/Dyna-Q/Steps/its-1000_eps-20000_a-0.1_g-1_e-0.05.png)
 
 ### Barrido de $\alpha$
 
@@ -120,7 +120,7 @@ Parámetros:
 
 Decisión: fijar $\alpha=0.1$.
 
-![](Outputs/Lab2/Dyna-Q/Alpha/its-1000_eps-20000_g-1_e-0.05_s-10.png)
+![](Outputs/Lab2_Ej1/Dyna-Q/Alpha/its-1000_eps-20000_g-1_e-0.05_s-10.png)
 
 ### Barrido de $\gamma$
 
@@ -130,7 +130,7 @@ Parámetros:
 
 Decisión: fijar $\gamma=0.9$.
 
-![](Outputs/Lab2/Dyna-Q/Gamma/its-1000_eps-20000_a-0.1_e-0.05_s-10.png)
+![](Outputs/Lab2_Ej1/Dyna-Q/Gamma/its-1000_eps-20000_a-0.1_e-0.05_s-10.png)
 
 ### Barrido de $\epsilon$
 
@@ -140,7 +140,7 @@ Parámetros:
 
 Decisión: fijar $\epsilon=0.05$.
 
-![](Outputs/Lab2/Dyna-Q/Epsilon/its-1000_eps-20000_a-0.1_g-0.9_s-10.png)
+![](Outputs/Lab2_Ej1/Dyna-Q/Epsilon/its-1000_eps-20000_a-0.1_g-0.9_s-10.png)
 
 ### Cantidad de episodios
 
@@ -150,10 +150,10 @@ Parámetros:
 
 Decisión: fijar $Eps=10^5$.
 
-![](Outputs/Lab2/Dyna-Q/Episodios/its-1000_a-0.1_g-0.9_e-0.05_s-10.png)
+![](Outputs/Lab2_Ej1/Dyna-Q/Episodios/its-1000_a-0.1_g-0.9_e-0.05_s-10.png)
 
 ## Comparación final y cierre
 
 Al comparar los mejores resultados de cada algoritmo utilizado, se puede ver que el mejor resulta ser SARSA con SoftMax. Mientras que Dyna-Q y Q-learning con $\epsilon$-greedy tienden a ir por el camino de SPG (buscar el premio extra e ir a la meta), SARSA con SoftMax va un paso más allá y tiende al camino SPJG (buscar el premio extra, luego el jetpack e ir a la meta). Sin embargo, ninguno tiende al camino SJPG, donde busca el jetpack, luego el premio extra y va a la meta.
 
-![](Outputs/Lab2/Ej_1_ComparacionFinal.png)
+![](Outputs/Lab2_Ej1/Ej_1_ComparacionFinal.png)
