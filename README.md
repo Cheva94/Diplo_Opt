@@ -2,9 +2,6 @@
 
 ## **Resolución de entregables de las materias optativas**
 
-**Estudiante:**
-- [Chevallier-Boutell, Ignacio José.](https://www.linkedin.com/in/nachocheva/)
-
 ### **Estructura:**
 
 **1. PDI:** Procesamiento digital de imágenes (media materia).
@@ -12,7 +9,24 @@
     - Delrieux, Claudio (LCI, UNS-CONICET).
     - Bajo, Juan Miguel (ICIC, UNS-CONICET).
 
+- **Estudiante:**
+    - [Chevallier-Boutell, Ignacio José.](https://www.linkedin.com/in/nachocheva/)
+
 **2. RL:** Aprendizaje por refuerzos (materia completa).
 - **Docentes:**
     - Palombarini, Jorge (Mercado Libre).
     - Barsce, Juan Cruz (Mercado Libre).
+
+- **Estudiante:**
+    - [Chevallier-Boutell, Ignacio José.](https://www.linkedin.com/in/nachocheva/)
+
+**3. DL:** Introducción al aprendizaje profundo (materia completa).
+- **Docentes:**
+    - Johanna Analiz Frau (Mercado Libre).
+    - Nindiría Armenta Guerrero (fyo).
+
+- **Estudiantes:**
+    - [Chevallier-Boutell, Ignacio José.](https://www.linkedin.com/in/nachocheva/)
+    - Gastelu, Gabriela.
+    - Santos, Maricel.
+    - Spano, Marcelo.
