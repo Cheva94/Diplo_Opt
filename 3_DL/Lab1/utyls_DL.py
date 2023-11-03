@@ -149,7 +149,7 @@ def validation(model, valloader, loss_function, device, use_tqdm=True):
 
     return epoch_validation_loss, (accuracy, f1)
 
-def run_experiment(model, n_epochs, trainloader, valloader, loss_function, optimizer, device):
+def run_experiment(model, n_epochs, trainloader, valloader, loss_function, optimizer, device, use_tqdm=True):
     '''
     Función de ejecución de experimentos, que entrena y valida el modelo, 
     evaluando la función de costo para cada conjunto de hiperparámetros. Guarda 
@@ -176,9 +176,9 @@ def run_experiment(model, n_epochs, trainloader, valloader, loss_function, optim
     # Loop through the dataset multiple times
     for epoch in range(1, n_epochs + 1):
         # Train the model
-        epoch_training_loss = train(model, trainloader, loss_function, optimizer, epoch, device)
+        epoch_training_loss = train(model, trainloader, loss_function, optimizer, epoch, device, use_tqdm)
         # Test the model
-        epoch_validation_loss, metrics = validation(model, valloader, loss_function, device)
+        epoch_validation_loss, metrics = validation(model, valloader, loss_function, device, use_tqdm)
 
         register_performance['epoch'].append(epoch)
         register_performance['epoch_training_loss'].append(epoch_training_loss)
@@ -190,6 +190,11 @@ def run_experiment(model, n_epochs, trainloader, valloader, loss_function, optim
         if metrics[0] > best_accuracy:
             best_model = model
             best_accuracy = metrics[0]
+
+        if (epoch % 10 == 0) and (epoch != n_epochs):
+            print(f'\tVoy por la época {epoch}! :)')
+        elif epoch == n_epochs:
+            print(f'\tTerminé! :D')
 
     # Save the results
     experiment = {
@@ -234,14 +239,18 @@ def get_data_loss_metrics(experiments_set):
 def plot_results(experiments_set):
 
     df_loss, df_metrics = get_data_loss_metrics(experiments_set)
+    L = [k*5+4 for k in range(int(len(df_loss['epoch'])/10))]
 
     print('Pérdidas:')
     sns.catplot(data=df_loss, x='epoch', y='loss',  hue='task', col='model-activation-optimizer-lr-wd',
                 col_wrap=3, kind='point', height=4, aspect=1.5)
+    plt.xticks(L)
     plt.show()
 
-    print('\n\nMétricas:')
+    print('\nMétricas:')
     fig, axs = plt.subplots(1, 2, figsize=(15, 4))
     sns.pointplot(data=df_metrics, x='epoch', y='validation_accuracy', hue='model-activation-optimizer-lr-wd', ax=axs[0])
+    axs[0].set_xticks(L)
     sns.pointplot(data=df_metrics, x='epoch', y='validation_f1', hue='model-activation-optimizer-lr-wd', ax=axs[1])
+    axs[1].set_xticks(L)
     plt.show()
