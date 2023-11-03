@@ -8,7 +8,7 @@ Dado el [dataset](https://www.kaggle.com/datasets/alexteboul/diabetes-health-ind
 
 3. En una siguiente instancia realizar una busqueda de hiperparametros buscando mejorar el baseline.
 
-4. Mostrar e Interpretar los resultados.
+4. Mostrar e interpretar los resultados.
 
 > **ACLARACIONES IMPORTANTES:**
 
