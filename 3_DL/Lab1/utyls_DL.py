@@ -86,7 +86,7 @@ def train(model, trainloader, loss_function, optimizer, epoch, device, use_tqdm=
         # Run a forward pass
         predicted_outputs = model(inputs.view(inputs.shape[0], -1))
         # Compute loss
-        loss = loss_function(predicted_outputs, labels)
+        loss = loss_function(predicted_outputs, labels.long())
         # Backpropagation
         # Compute gradients
         loss.backward()
@@ -132,7 +132,7 @@ def validation(model, valloader, loss_function, device, use_tqdm=True):
             # Run the forward pass
             predicted_outputs = model(inputs.view(inputs.shape[0], -1))
             # Compute loss
-            loss = loss_function(predicted_outputs, labels)
+            loss = loss_function(predicted_outputs, labels.long())
             # Accumulate the average loss of the mini-batch
             validation_loss += loss.item()
 
