@@ -1,5 +1,10 @@
 #!/usr/bin/python3.10
 
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 from sklearn.preprocessing import MinMaxScaler
 from sklearn import metrics
 
@@ -28,11 +33,10 @@ def preproc(DataFrame, cols_binary, cols_non_binary, BATCH_SIZE):
 
     scaler = MinMaxScaler()
 
-    feat_bin = torch.tensor(np.array(DataFrame[cols_binary])).float()
-    feat_nbin = torch.tensor(scaler.fit_transform(np.array(DataFrame[cols_non_binary]))).float()
+    features = torch.tensor(scaler.fit_transform(np.array(DataFrame[cols_binary+cols_non_binary]))).float()
     target = torch.tensor(np.array(DataFrame['Diabetes_binary'])).float()
 
-    Data = TensorDataset(feat_bin, feat_nbin, target)
+    Data = TensorDataset(features, target)
 
     test_split = int(len(target)*0.8)
     validate_split = int(len(target)*0.1)
@@ -47,7 +51,7 @@ def preproc(DataFrame, cols_binary, cols_non_binary, BATCH_SIZE):
     return Data_train, Data_val, Data_test, Load_train, Load_val, Load_test
 
 ################################################################################
-#                       Entrenamiento y validación
+#                       Entrenamiento y validación: correr experimentos
 ################################################################################
 
 def train(model, trainloader, loss_function, optimizer, epoch, device, use_tqdm=True):
@@ -102,7 +106,7 @@ def train(model, trainloader, loss_function, optimizer, epoch, device, use_tqdm=
     return epoch_training_loss
 
 
-def validation(model, valloader, device, use_tqdm=True):
+def validation(model, valloader, loss_function, device, use_tqdm=True):
     '''
     Lleva a cabo la validación del modelo. Se utiliza la accuracy como métrica 
     principal y el f1-score como métrica secundaria.
@@ -122,7 +126,7 @@ def validation(model, valloader, device, use_tqdm=True):
     total = 0
     # Don't calculate gradient speed up the forward pass
     with torch.no_grad():
-        pbar = tqdm(dataloader) if use_tqdm else dataloader
+        pbar = tqdm(valloader) if use_tqdm else valloader
         for (inputs, labels) in pbar:
             inputs, labels = inputs.to(device), labels.to(device)
             # Run the forward pass
@@ -137,7 +141,7 @@ def validation(model, valloader, device, use_tqdm=True):
             y_true.extend(labels.cpu().numpy())
             y_pred.extend(predicted.cpu().numpy())
 
-    epoch_validation_loss = round(validation_loss / len(dataloader), 4)
+    epoch_validation_loss = round(validation_loss / len(valloader), 4)
 
     # Calculate metrics
     accuracy = metrics.accuracy_score(y_true, y_pred)
@@ -145,7 +149,7 @@ def validation(model, valloader, device, use_tqdm=True):
 
     return epoch_validation_loss, (accuracy, f1)
 
-def run_experiment(model, n_epochs, trainloader, testloader, loss_function, optimizer, device):
+def run_experiment(model, n_epochs, trainloader, valloader, loss_function, optimizer, device):
     '''
     Función de ejecución de experimentos, que entrena y valida el modelo, 
     evaluando la función de costo para cada conjunto de hiperparámetros. Guarda 
@@ -155,7 +159,7 @@ def run_experiment(model, n_epochs, trainloader, testloader, loss_function, opti
         model: estructura de la red neuronal.
         n_epochs: número de épocas a entrenar.
         trainloader: cargador de datos de entrenamiento.
-        testloader: cargador de datos de validación.
+        valloader: cargador de datos de validación.
         loss_function: función de costo a utilizar.
         optimizer: tipo de descenso por gradiente a utilizar.
         device: dónde se realiza el cálculo.
@@ -174,7 +178,7 @@ def run_experiment(model, n_epochs, trainloader, testloader, loss_function, opti
         # Train the model
         epoch_training_loss = train(model, trainloader, loss_function, optimizer, epoch, device)
         # Test the model
-        epoch_validation_loss, metrics = validation(model, testloader, device)
+        epoch_validation_loss, metrics = validation(model, valloader, loss_function, device)
 
         register_performance['epoch'].append(epoch)
         register_performance['epoch_training_loss'].append(epoch_training_loss)
@@ -204,6 +208,10 @@ def run_experiment(model, n_epochs, trainloader, testloader, loss_function, opti
           )
     return experiment, register_performance, best_model
 
+################################################################################
+#                       Graficar
+################################################################################
+
 def get_data_loss_metrics(experiments_set):
     df_base = pd.DataFrame()
     for i in range(len(experiments_set)):
@@ -223,11 +231,17 @@ def get_data_loss_metrics(experiments_set):
                                                                                         var_name='task', value_name='loss')
     return df_loss, df_metrics
 
-def plot_loss(experiment):
-    df_experiment = pd.DataFrame(experiment[1])
+def plot_results(experiments_set):
 
-    sns.pointplot(data=df_experiment, x='epoch', y='epoch_training_loss', color='orange', label='Training')
-    sns.pointplot(data=df_experiment, x='epoch', y='epoch_validation_loss', label='Validation')
-    plt.ylabel('Loss')
-    plt.legend()
+    df_loss, df_metrics = get_data_loss_metrics(experiments_set)
+
+    print('Pérdidas:')
+    sns.catplot(data=df_loss, x='epoch', y='loss',  hue='task', col='model-activation-optimizer-lr-wd',
+                col_wrap=3, kind='point', height=4, aspect=1.5)
+    plt.show()
+
+    print('\n\nMétricas:')
+    fig, axs = plt.subplots(1, 2, figsize=(15, 4))
+    sns.pointplot(data=df_metrics, x='epoch', y='validation_accuracy', hue='model-activation-optimizer-lr-wd', ax=axs[0])
+    sns.pointplot(data=df_metrics, x='epoch', y='validation_f1', hue='model-activation-optimizer-lr-wd', ax=axs[1])
     plt.show()
