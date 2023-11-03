@@ -222,7 +222,7 @@ def get_data_loss_metrics(experiments_set):
     for i in range(len(experiments_set)):
         arquitecture = experiments_set[i][0]['arquitecture']
         model_name = arquitecture.split('(')[0]
-        activation_function_name = arquitecture.split('(')[-2].split(': ')[1]
+        activation_function_name = arquitecture.split('activ1): ')[1].split('()\n  (drop1)')[0].split('(negative_slope')[0]
         optim = type(experiments_set[i][0]['optimizer']).__name__
         lr = experiments_set[i][0]['optimizer'].param_groups[0]['lr']
         weight_decay = experiments_set[i][0]['optimizer'].param_groups[0]['weight_decay']
