@@ -12,6 +12,8 @@ import torch
 from torch.utils.data import TensorDataset, random_split, DataLoader
 from tqdm.notebook import tqdm
 
+import time
+
 ################################################################################
 #                       Preprocesamiento
 ################################################################################
@@ -105,7 +107,6 @@ def train(model, trainloader, loss_function, optimizer, epoch, device, use_tqdm=
 
     return epoch_training_loss
 
-
 def validation(model, valloader, loss_function, device, use_tqdm=True):
     '''
     Lleva a cabo la validación del modelo. Se utiliza la accuracy como métrica 
@@ -167,6 +168,7 @@ def run_experiment(model, n_epochs, trainloader, valloader, loss_function, optim
         loss_function: función de costo a utilizar.
         optimizer: tipo de descenso por gradiente a utilizar.
         device: dónde se realiza el cálculo.
+        use_tqdm: muestra el progreso del entrenamiento.
     '''
 
     register_performance = {
@@ -177,11 +179,12 @@ def run_experiment(model, n_epochs, trainloader, valloader, loss_function, optim
     best_accuracy = 0.0
 
     print("Begin training...")
+    start = time.time()
     # Loop through the dataset multiple times
     for epoch in range(1, n_epochs + 1):
         # Train the model
         epoch_training_loss = train(model, trainloader, loss_function, optimizer, epoch, device, use_tqdm)
-        # Test the model
+        # Validate the model
         epoch_validation_loss, metrics = validation(model, valloader, loss_function, device, use_tqdm)
 
         register_performance['epoch'].append(epoch)
@@ -198,7 +201,9 @@ def run_experiment(model, n_epochs, trainloader, valloader, loss_function, optim
         if (epoch % 10 == 0) and (epoch != n_epochs):
             print(f'\tVoy por la época {epoch}! :)')
         elif epoch == n_epochs:
-            print(f'\tTerminé! :D')
+            WallTime = time.time() - start
+            print(f'\tTerminé! :D >>> WallTime = {WallTime/60:.2f} min')
+
 
     # Save the results
     experiment = {
@@ -262,9 +267,147 @@ def plot_results(n_epochs, path, experiments_set=None):
     plt.show()
 
     print('\nMétricas:')
-    fig, axs = plt.subplots(1, 2, figsize=(15, 4))
+    _, axs = plt.subplots(1, 2, figsize=(15, 4))
     sns.pointplot(data=df_metrics, x='epoch', y='validation_accuracy', hue='model-activation-optimizer-lr-wd', ax=axs[0])
     axs[0].set_xticks(L)
     sns.pointplot(data=df_metrics, x='epoch', y='validation_f1', hue='model-activation-optimizer-lr-wd', ax=axs[1])
     axs[1].set_xticks(L)
+    plt.show()
+
+################################################################################
+#                       Correr, guardar y graficar el mejor caso
+################################################################################
+
+def run_best(model, n_epochs, trainloader, valloader, testloader, loss_function, optimizer, device, use_tqdm=True):
+    '''
+    Ejecuta la corrida con los mejores hiperparámetros encontrados, entrenando, 
+    validando y evaluando el modelo.
+
+    Args:
+        model: estructura de la red neuronal.
+        n_epochs: número de épocas a entrenar.
+        trainloader: cargador de datos de entrenamiento.
+        valloader: cargador de datos de validación.
+        testloader: cargador de datos de evaluación.
+        loss_function: función de costo a utilizar.
+        optimizer: tipo de descenso por gradiente a utilizar.
+        device: dónde se realiza el cálculo.
+        use_tqdm: muestra el progreso del entrenamiento.
+    '''
+
+    register_performance = {
+        'epoch': [],
+        'epoch_training_loss': [], 
+        'epoch_validation_loss': [], 
+        'epoch_testing_loss': [], 
+        'training_accuracy': [], 'training_f1': [],
+        'validation_accuracy': [], 'validation_f1': [],
+        'testing_accuracy': [], 'testing_f1': []
+        }
+    best_accuracy = 0.0
+
+    print("Begin training...")
+    start = time.time()
+    # Loop through the dataset multiple times
+    for epoch in range(1, n_epochs + 1):
+        register_performance['epoch'].append(epoch)
+        # Train the model
+        epoch_training_loss = train(model, trainloader, loss_function, optimizer, epoch, device, use_tqdm)
+        register_performance['epoch_training_loss'].append(epoch_training_loss)
+        _, metrics_train = validation(model, trainloader, loss_function, device, use_tqdm)
+        register_performance['training_accuracy'].append(metrics_train[0])
+        register_performance['training_f1'].append(metrics_train[1])
+
+        # Validate the model
+        epoch_validation_loss, metrics_val = validation(model, valloader, loss_function, device, use_tqdm)
+        register_performance['epoch_validation_loss'].append(epoch_validation_loss)
+        register_performance['validation_accuracy'].append(metrics_val[0])
+        register_performance['validation_f1'].append(metrics_val[1])
+        
+        # Test the model
+        epoch_testing_loss, metrics_test = validation(model, testloader, loss_function, device, use_tqdm)
+        register_performance['epoch_testing_loss'].append(epoch_testing_loss)
+        register_performance['testing_accuracy'].append(metrics_test[0])
+        register_performance['testing_f1'].append(metrics_test[1])
+
+        # Save the model if the accuracy is the best
+        if metrics_val[0] > best_accuracy:
+            best_model = model
+            best_accuracy = metrics_val[0]
+
+        if (epoch % 10 == 0) and (epoch != n_epochs):
+            print(f'\tVoy por la época {epoch}! :)')
+        elif epoch == n_epochs:
+            WallTime = time.time() - start
+            print(f'\tTerminé! :D >>> WallTime = {WallTime/60:.2f} min')
+
+    # Save the results
+    experiment = {
+        'arquitecture': str(model),
+        'optimizer': optimizer,
+        'loss': str(loss_function),
+        'epochs': n_epochs,
+    }
+
+    # Print the statistics of the epoch
+    print(f'Completed training in {epoch} batch: ',
+          'Training Loss is: ' , epoch_training_loss,
+          'Training Accuracy is: ', (metrics_train[0]),
+          'Training F1 is: ', (metrics_train[1]),
+          'Validation Loss is: ', epoch_validation_loss,
+          'Validation Accuracy is: ', (metrics_val[0]),
+          'Validation F1 is: ', (metrics_val[1]),
+          'Testing Loss is: ', epoch_testing_loss,
+          'Testing Accuracy is: ', (metrics_test[0]),
+          'Testing F1 is: ', (metrics_test[1])
+          )
+    return experiment, register_performance, best_model
+
+def get_best_loss_metrics(best_exp, path):
+    df_base = pd.DataFrame()
+    
+    arquitecture = best_exp[0]['arquitecture']
+    model_name = arquitecture.split('(')[0]
+    activation_function_name = arquitecture.split('activ1): ')[1].split('()\n  (drop1)')[0].split('(negative_slope')[0]
+    optim = type(best_exp[0]['optimizer']).__name__
+    lr = best_exp[0]['optimizer'].param_groups[0]['lr']
+    weight_decay = best_exp[0]['optimizer'].param_groups[0]['weight_decay']
+    df = pd.DataFrame(best_exp[1])
+    df['model-activation-optimizer-lr-wd'] = f'{model_name}-{activation_function_name}-{optim}-{lr}-{weight_decay}'
+    df_base = pd.concat([df_base, df])
+
+    df_base.to_csv(path, index=False)
+
+    df_metrics = df_base.drop(columns=['epoch_training_loss', 'epoch_validation_loss', 'epoch_testing_loss'])
+    df_loss = df_base.drop(columns=['training_accuracy', 'training_f1', 'validation_accuracy', 'validation_f1', 'testing_accuracy', 'testing_f1']).melt(id_vars=['epoch', 'model-activation-optimizer-lr-wd'],
+                                                                                        value_vars=['epoch_training_loss', 'epoch_validation_loss', 'epoch_testing_loss'],
+                                                                                        var_name='task', value_name='loss')
+    return df_loss, df_metrics
+
+def plot_best(n_epochs, path, experiments_set=None):
+
+    L = [k*10+9 for k in range(int(n_epochs/10))]
+
+    if experiments_set == None:
+        df_base = pd.read_csv(path)
+        df_metrics = df_base.drop(columns=['epoch_training_loss', 'epoch_validation_loss', 'epoch_testing_loss'])
+        df_loss = df_base.drop(columns=['training_accuracy', 'training_f1', 'validation_accuracy', 'validation_f1', 'testing_accuracy', 'testing_f1']).melt(id_vars=['epoch', 'model-activation-optimizer-lr-wd'],
+                                                                                            value_vars=['epoch_training_loss', 'epoch_validation_loss', 'epoch_testing_loss'],
+                                                                                            var_name='task', value_name='loss')
+    else:
+        df_loss, df_metrics = get_best_loss_metrics(experiments_set, path)
+
+    print('Pérdidas:')
+    sns.catplot(data=df_loss, x='epoch', y='loss',  hue='task', col='model-activation-optimizer-lr-wd',
+                col_wrap=1, kind='point', height=4, aspect=1.5)
+    plt.xticks(L)
+    plt.show()
+
+    print('\nMétricas:')
+    sns.pointplot(data=df_metrics, x='epoch', y='training_accuracy', color='C0', label='Train')
+    sns.pointplot(data=df_metrics, x='epoch', y='validation_accuracy', color='C1', label='Val')
+    sns.pointplot(data=df_metrics, x='epoch', y='testing_accuracy', color='C2', label='Test')
+    plt.ylabel('Accuracy')
+    plt.xticks(L)
+    plt.legend(loc='lower right')
     plt.show()
