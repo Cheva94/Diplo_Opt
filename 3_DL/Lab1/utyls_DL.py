@@ -51,7 +51,7 @@ def preproc(DataFrame, cols_binary, cols_non_binary, BATCH_SIZE):
     return Data_train, Data_val, Data_test, Load_train, Load_val, Load_test
 
 ################################################################################
-#                       Entrenamiento y validación: correr experimentos
+#                       Entrenamiento y validación
 ################################################################################
 
 def train(model, trainloader, loss_function, optimizer, epoch, device, use_tqdm=True):
@@ -149,6 +149,10 @@ def validation(model, valloader, loss_function, device, use_tqdm=True):
 
     return epoch_validation_loss, (accuracy, f1)
 
+################################################################################
+#                       Correr y guardar experimentos
+################################################################################
+
 def run_experiment(model, n_epochs, trainloader, valloader, loss_function, optimizer, device, use_tqdm=True):
     '''
     Función de ejecución de experimentos, que entrena y valida el modelo, 
@@ -213,11 +217,7 @@ def run_experiment(model, n_epochs, trainloader, valloader, loss_function, optim
           )
     return experiment, register_performance, best_model
 
-################################################################################
-#                       Graficar
-################################################################################
-
-def get_data_loss_metrics(experiments_set):
+def get_data_loss_metrics(experiments_set, path):
     df_base = pd.DataFrame()
     for i in range(len(experiments_set)):
         arquitecture = experiments_set[i][0]['arquitecture']
@@ -230,16 +230,30 @@ def get_data_loss_metrics(experiments_set):
         df['model-activation-optimizer-lr-wd'] = f'{model_name}-{activation_function_name}-{optim}-{lr}-{weight_decay}'
         df_base = pd.concat([df_base, df])
 
+    df_base.to_csv(path, index=False)
+
     df_metrics = df_base.drop(columns=['epoch_training_loss', 'epoch_validation_loss'])
     df_loss = df_base.drop(columns=['validation_accuracy', 'validation_f1']).melt(id_vars=['epoch', 'model-activation-optimizer-lr-wd'],
                                                                                         value_vars=['epoch_training_loss', 'epoch_validation_loss'],
                                                                                         var_name='task', value_name='loss')
     return df_loss, df_metrics
 
-def plot_results(experiments_set):
+################################################################################
+#                       Graficar
+################################################################################
 
-    df_loss, df_metrics = get_data_loss_metrics(experiments_set)
-    L = [k*5+4 for k in range(int(len(df_loss['epoch'])/10))]
+def plot_results(n_epochs, path, experiments_set=None):
+
+    L = [k*10+9 for k in range(int(n_epochs/10))]
+
+    if experiments_set == None:
+        df_base = pd.read_csv(path)
+        df_metrics = df_base.drop(columns=['epoch_training_loss', 'epoch_validation_loss'])
+        df_loss = df_base.drop(columns=['validation_accuracy', 'validation_f1']).melt(id_vars=['epoch', 'model-activation-optimizer-lr-wd'],
+                                                                                            value_vars=['epoch_training_loss', 'epoch_validation_loss'],
+                                                                                            var_name='task', value_name='loss')
+    else:
+        df_loss, df_metrics = get_data_loss_metrics(experiments_set, path)
 
     print('Pérdidas:')
     sns.catplot(data=df_loss, x='epoch', y='loss',  hue='task', col='model-activation-optimizer-lr-wd',
