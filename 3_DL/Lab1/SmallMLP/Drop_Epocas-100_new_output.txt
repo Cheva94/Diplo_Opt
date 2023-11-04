@@ -1,0 +1,45 @@
+
+
+ Corriendo con 0.0
+Begin training...
+	Voy por la época 10! :)
+	Voy por la época 20! :)
+	Voy por la época 30! :)
+	Voy por la época 40! :)
+	Voy por la época 50! :)
+	Voy por la época 60! :)
+	Voy por la época 70! :)
+	Voy por la época 80! :)
+	Voy por la época 90! :)
+	Terminé! :D >>> WallTime = 3.23 min
+Completed training in 100 batch:  Training Loss is:  0.5 - Validation Loss is:  0.5144 - Accuracy is:  0.7421134531051068 - F1 is:  0.7418
+
+
+ Corriendo con 0.05
+Begin training...
+	Voy por la época 10! :)
+	Voy por la época 20! :)
+	Voy por la época 30! :)
+	Voy por la época 40! :)
+	Voy por la época 50! :)
+	Voy por la época 60! :)
+	Voy por la época 70! :)
+	Voy por la época 80! :)
+	Voy por la época 90! :)
+	Terminé! :D >>> WallTime = 3.44 min
+Completed training in 100 batch:  Training Loss is:  0.5417 - Validation Loss is:  0.5233 - Accuracy is:  0.7411232140331023 - F1 is:  0.7406
+
+
+ Corriendo con 0.1
+Begin training...
+	Voy por la época 10! :)
+	Voy por la época 20! :)
+	Voy por la época 30! :)
+	Voy por la época 40! :)
+	Voy por la época 50! :)
+	Voy por la época 60! :)
+	Voy por la época 70! :)
+	Voy por la época 80! :)
+	Voy por la época 90! :)
+	Terminé! :D >>> WallTime = 3.70 min
+Completed training in 100 batch:  Training Loss is:  0.5628 - Validation Loss is:  0.5344 - Accuracy is:  0.7378695713679445 - F1 is:  0.7372

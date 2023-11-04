@@ -12,6 +12,8 @@ import torch
 from torch.utils.data import TensorDataset, random_split, DataLoader
 from tqdm.notebook import tqdm
 
+import time
+
 ################################################################################
 #                       Preprocesamiento
 ################################################################################
@@ -177,6 +179,7 @@ def run_experiment(model, n_epochs, trainloader, valloader, loss_function, optim
     best_accuracy = 0.0
 
     print("Begin training...")
+    start = time.time()
     # Loop through the dataset multiple times
     for epoch in range(1, n_epochs + 1):
         # Train the model
@@ -198,7 +201,9 @@ def run_experiment(model, n_epochs, trainloader, valloader, loss_function, optim
         if (epoch % 10 == 0) and (epoch != n_epochs):
             print(f'\tVoy por la época {epoch}! :)')
         elif epoch == n_epochs:
-            print(f'\tTerminé! :D')
+            WallTime = time.time() - start
+            print(f'\tTerminé! :D >>> WallTime = {WallTime/60:.2f} min')
+
 
     # Save the results
     experiment = {
