@@ -1,23 +1,23 @@
 >>> 32
-WallTime = 4.05 min
+WallTime = 2.93 min
 Completed training in 100 batch:
-	Training Loss is:  0.4937 
-	Validation Loss is:  0.5206 
-	Accuracy is:  0.7450841703211204 
-	F1 is:  0.7449
+	Training Loss is:  0.5201 
+	Validation Loss is:  0.5269 
+	Accuracy is:  0.7340500778044985
+	F1 is:  0.7334
 
 >>> 64
-WallTime = 2.34 min
+WallTime = 1.93 min
 Completed training in 100 batch: 
-	Training Loss is:  0.5054 
-	Validation Loss is:  0.5024 
-	Accuracy is:  0.7595133682274721 
-	F1 is:  0.7577
+	Training Loss is:  0.5024 
+	Validation Loss is:  0.5083 
+	Accuracy is:  0.7534304710708728
+	F1 is:  0.7524
 
 >>> 128
-WallTime = 1.46 min
+WallTime = 1.40 min
 Completed training in 100 batch: 
-	Training Loss is:  0.5067 
-	Validation Loss is:  0.5105 
-	Accuracy is:  0.7510256047531475 
-	F1 is:  0.7482
+	Training Loss is:  0.5106
+	Validation Loss is:  0.5157
+	Accuracy is:  0.7452256330456924
+	F1 is:  0.7441
