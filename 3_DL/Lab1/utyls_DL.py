@@ -376,7 +376,10 @@ def get_best_loss_metrics(best_exp, path):
     
     arquitecture = best_exp[0]['arquitecture']
     model_name = arquitecture.split('(')[0]
-    activation_function_name = arquitecture.split('activ1): ')[1].split('()\n  (drop1)')[0].split('(negative_slope')[0]
+    if len(arquitecture.split('activ1): ')) == 1:
+            activation_function_name = arquitecture.split('(1): ')[1].split('()\n')[0].split('(negative_slope')[0]
+    else:
+        activation_function_name = arquitecture.split('activ1): ')[1].split('()\n  (drop1)')[0].split('(negative_slope')[0]
     optim = type(best_exp[0]['optimizer']).__name__
     lr = best_exp[0]['optimizer'].param_groups[0]['lr']
     weight_decay = best_exp[0]['optimizer'].param_groups[0]['weight_decay']
