@@ -1,6 +1,6 @@
-# TRABAJO PRÁCTICO I (Media Materia)
+# TRABAJO PRÁCTICO 1/2
 
-Dado el [dataset](https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset/data?select=diabetes_binary_5050split_health_indicators_BRFSS2015.csv) que busca predecir la presencia o ausencia de Diabetes. Se pide:
+Dado el [dataset](https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset/data?select=diabetes_binary_5050split_health_indicators_BRFSS2015.csv) que busca predecir la presencia o ausencia de diabetes, se pide:
 
 1. Realizar una pequeña inspeccion del dataset que busque entender de qué se trata el dataset y el problema a resolver. La idea es inspecionar no realizar un EDA completo, pueden valerse de herramientas que simplifiquen o realicen esta tarea.
 

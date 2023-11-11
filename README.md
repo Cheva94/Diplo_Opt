@@ -20,13 +20,13 @@
 - **Estudiante:**
     - [Chevallier-Boutell, Ignacio José.](https://www.linkedin.com/in/nachocheva/)
 
-**3. DL:** Introducción al aprendizaje profundo (materia completa).
+**3. DL:** Introducción al aprendizaje profundo.
 - **Docentes:**
     - Johanna Analiz Frau (Mercado Libre).
     - Nindiría Armenta Guerrero (fyo).
 
 - **Estudiantes:**
-    - [Chevallier-Boutell, Ignacio José.](https://www.linkedin.com/in/nachocheva/)
-    - Gastelu, Gabriela.
-    - Santos, Maricel.
-    - Spano, Marcelo.
+    - [Chevallier-Boutell, Ignacio José](https://www.linkedin.com/in/nachocheva/) (materia completa).
+    - Gastelu, Gabriela (materia completa).
+    - Santos, Maricel (media materia).
+    - Spano, Marcelo (materia completa).
