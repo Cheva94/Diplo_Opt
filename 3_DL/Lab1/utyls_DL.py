@@ -228,7 +228,7 @@ def get_data_loss_metrics(experiments_set, path):
         arquitecture = experiments_set[i][0]['arquitecture']
         model_name = arquitecture.split('(')[0]
         if len(arquitecture.split('activ1): ')) == 1:
-            activation_function_name = arquitecture.split('(1): ')[1].split('()\n')[0]
+            activation_function_name = arquitecture.split('(1): ')[1].split('()\n')[0].split('(negative_slope')[0]
         else:
             activation_function_name = arquitecture.split('activ1): ')[1].split('()\n  (drop1)')[0].split('(negative_slope')[0]
         optim = type(experiments_set[i][0]['optimizer']).__name__
@@ -250,23 +250,25 @@ def get_data_loss_metrics(experiments_set, path):
 #                       Graficar
 ################################################################################
 
-def plot_results(n_epochs, path, experiments_set=None):
+def plot_results(n_epochs, path, exs_set=None, yLoss=[None, None], yMet=[None, None]):
 
     L = [k*10+9 for k in range(int(n_epochs/10))]
 
-    if experiments_set == None:
+    if exs_set == None:
         df_base = pd.read_csv(path)
         df_metrics = df_base.drop(columns=['epoch_training_loss', 'epoch_validation_loss'])
         df_loss = df_base.drop(columns=['validation_accuracy', 'validation_f1']).melt(id_vars=['epoch', 'model-activation-optimizer-lr-wd'],
                                                                                             value_vars=['epoch_training_loss', 'epoch_validation_loss'],
                                                                                             var_name='task', value_name='loss')
     else:
-        df_loss, df_metrics = get_data_loss_metrics(experiments_set, path)
+        df_loss, df_metrics = get_data_loss_metrics(exs_set, path)
 
     print('Pérdidas:')
     sns.catplot(data=df_loss, x='epoch', y='loss',  hue='task', col='model-activation-optimizer-lr-wd',
                 col_wrap=3, kind='point', height=4, aspect=1.5)
     plt.xticks(L)
+    if yLoss[0] != None:
+        plt.ylim(yLoss[0], yLoss[1])
     plt.show()
 
     print('\nMétricas:')
@@ -275,6 +277,9 @@ def plot_results(n_epochs, path, experiments_set=None):
     axs[0].set_xticks(L)
     sns.pointplot(data=df_metrics, x='epoch', y='validation_f1', hue='model-activation-optimizer-lr-wd', ax=axs[1])
     axs[1].set_xticks(L)
+    if yMet[0] != None:
+        axs[0].set_ylim(yMet[0], yMet[1])
+        axs[1].set_ylim(yMet[0], yMet[1])
     plt.show()
 
 ################################################################################
@@ -371,7 +376,10 @@ def get_best_loss_metrics(best_exp, path):
     
     arquitecture = best_exp[0]['arquitecture']
     model_name = arquitecture.split('(')[0]
-    activation_function_name = arquitecture.split('activ1): ')[1].split('()\n  (drop1)')[0].split('(negative_slope')[0]
+    if len(arquitecture.split('activ1): ')) == 1:
+            activation_function_name = arquitecture.split('(1): ')[1].split('()\n')[0].split('(negative_slope')[0]
+    else:
+        activation_function_name = arquitecture.split('activ1): ')[1].split('()\n  (drop1)')[0].split('(negative_slope')[0]
     optim = type(best_exp[0]['optimizer']).__name__
     lr = best_exp[0]['optimizer'].param_groups[0]['lr']
     weight_decay = best_exp[0]['optimizer'].param_groups[0]['weight_decay']
