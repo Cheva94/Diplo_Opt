@@ -27,6 +27,6 @@
 
 - **Estudiantes:**
     - [Chevallier-Boutell, Ignacio José](https://www.linkedin.com/in/nachocheva/) (materia completa).
-    - Gastelu, Gabriela (materia completa).
+    - Gastelu, Gabriela (media materia).
     - Santos, Maricel (media materia).
     - Spano, Marcelo (materia completa).
